@@ -1,35 +1,29 @@
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-// ⚠️ IMPORTANT: If using Expo Go on a physical device, set your computer's local IP here
-// To find your local IP:
-// - macOS: Open System Settings → Network → Your active connection → Details → TCP/IP
-// - macOS (terminal): run `ipconfig getifaddr en0`
-// - Windows: run `ipconfig` and look for IPv4 Address
-// - Linux: run `hostname -I | awk '{print $1}'`
-//
-// Example: '192.168.1.100' or '192.168.0.50'
-const LOCAL_IP = 'YOUR_LOCAL_IP_HERE'; // 👈 Replace this with your actual IP
-
-const getLocalApiUrl = () => {
+// Automatically detect the correct API URL for your environment
+const getApiUrl = () => {
   if (!__DEV__) {
     return 'https://your-production-strapi-url.com';
   }
 
-  // If using Expo Go or physical device, use your computer's local IP
-  if (LOCAL_IP !== 'YOUR_LOCAL_IP_HERE') {
-    return `http://${LOCAL_IP}:1337`;
+  // For Expo Go: automatically use the same IP as the dev server
+  const debuggerHost = Constants.expoConfig?.hostUri;
+  if (debuggerHost) {
+    // Extract the IP from the debuggerHost (removes the port)
+    const host = debuggerHost.split(':')[0];
+    return `http://${host}:1337`;
   }
 
-  // For Android emulator (not Expo Go), use 10.0.2.2
+  // Fallback for other environments
   if (Platform.OS === 'android') {
-    return 'http://10.0.2.2:1337';
+    return 'http://10.0.2.2:1337'; // Android emulator
   }
 
-  // For iOS simulator and web, localhost works
-  return 'http://localhost:1337';
+  return 'http://localhost:1337'; // iOS simulator / web
 };
 
-export const API_URL = getLocalApiUrl();
+export const API_URL = getApiUrl();
 
 export const API_ENDPOINTS = {
   articles: '/api/articles',
