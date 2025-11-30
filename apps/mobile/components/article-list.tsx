@@ -11,7 +11,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Article } from '@/types/article';
 import { fetchArticles } from '@/services/articles';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export function ArticleList() {
   const [articles, setArticles] = useState<Article[]>([]);
