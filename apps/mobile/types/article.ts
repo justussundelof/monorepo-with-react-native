@@ -11,7 +11,7 @@ export interface Article {
   category?: {
     id: number;
     documentId: string;
-    name: string;
+    Name: string;
   };
 }
 

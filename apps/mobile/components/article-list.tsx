@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
+import { Link } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Article } from '@/types/article';
 import { fetchArticles } from '@/services/articles';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export function ArticleList() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -75,25 +76,27 @@ export function ArticleList() {
   }
 
   const renderArticle = ({ item }: { item: Article }) => (
-    <TouchableOpacity style={styles.articleCard}>
-      <ThemedView style={styles.cardContent}>
-        <ThemedText type="subtitle" style={styles.articleTitle}>
-          {item.title}
-        </ThemedText>
-        {item.category && (
-          <View style={styles.categoryBadge}>
-            <ThemedText style={styles.categoryText}>{item.category.name}</ThemedText>
-          </View>
-        )}
-        <ThemedText style={styles.articleDate}>
-          {new Date(item.publishedAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </ThemedText>
-      </ThemedView>
-    </TouchableOpacity>
+    <Link href={`/article/${item.slug}`} asChild>
+      <TouchableOpacity style={styles.articleCard}>
+        <ThemedView style={styles.cardContent}>
+          <ThemedText type="subtitle" style={styles.articleTitle}>
+            {item.title}
+          </ThemedText>
+          {item.category && (
+            <View style={styles.categoryBadge}>
+              <ThemedText style={styles.categoryText}>{item.category.Name}</ThemedText>
+            </View>
+          )}
+          <ThemedText style={styles.articleDate}>
+            {new Date(item.publishedAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </ThemedText>
+        </ThemedView>
+      </TouchableOpacity>
+    </Link>
   );
 
   return (
